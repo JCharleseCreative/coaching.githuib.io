@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FORGE — Strength & Performance Coaching</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=JetBrains+Mono:wght@400;600;700&family=Work+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0D0D0F;
+    --surface: #17181B;
+    --surface-2: #1F2023;
+    --line: #2A2B2F;
+    --text: #F4F2EC;
+    --text-dim: #9B9C9F;
+    --signal: #FF4A1F;     /* molten orange — energy/effort */
+    --signal-dim: #7A2A15;
+    --steel: #3FA9F5;      /* steel blue — precision/data */
+    --focus: #FFD166;
+  }
+
+  *{margin:0; padding:0; box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important;}
+  }
+
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Work Sans', sans-serif;
+    line-height:1.5;
+    overflow-x:hidden;
+  }
+
+  a{color:inherit; text-decoration:none;}
+  ul{list-style:none;}
+  img{max-width:100%; display:block;}
+
+  :focus-visible{
+    outline:3px solid var(--focus);
+    outline-offset:3px;
+  }
+
+  .wrap{
+    max-width:1180px;
+    margin:0 auto;
+    padding:0 28px;
+  }
+
+  h1,h2,h3{
+    font-family:'Anton', sans-serif;
+    font-weight:400;
+    text-transform:uppercase;
+    letter-spacing:0.01em;
+    line-height:0.95;
+  }
+
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    color:var(--signal);
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .eyebrow::before{
+    content:"";
+    width:20px;
+    height:2px;
+    background:var(--signal);
+    display:inline-block;
+  }
+
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    padding:14px 26px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:13px;
+    font-weight:700;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    border-radius:2px;
+    cursor:pointer;
+    border:2px solid transparent;
+    transition:transform .15s ease, background .15s ease, border-color .15s ease;
+  }
+  .btn:hover{transform:translateY(-2px);}
+  .btn-primary{
+    background:var(--signal);
+    color:#0D0D0F;
+  }
+  .btn-primary:hover{background:#ff6a41;}
+  .btn-outline{
+    border-color:var(--line);
+    color:var(--text);
+  }
+  .btn-outline:hover{border-color:var(--text);}
+
+  /* ---------- NAV ---------- */
+  header{
+    position:sticky;
+    top:0;
+    z-index:100;
+    background:rgba(13,13,15,0.88);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  nav{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:18px 28px;
+    max-width:1180px;
+    margin:0 auto;
+  }
+  .logo{
+    font-family:'Anton', sans-serif;
+    font-size:22px;
+    letter-spacing:0.03em;
+    text-transform:uppercase;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .logo span{color:var(--signal);}
+  .navlinks{
+    display:flex;
+    gap:32px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+  }
+  .navlinks a{
+    color:var(--text-dim);
+    position:relative;
+    padding-bottom:4px;
+    transition:color .15s ease;
+  }
+  .navlinks a:hover{color:var(--text);}
+  .nav-cta{display:flex; align-items:center; gap:24px;}
+  .menu-toggle{display:none; background:none; border:none; color:var(--text); font-size:24px; cursor:pointer;}
+
+  @media (max-width:820px){
+    .navlinks{
+      position:fixed;
+      top:64px; left:0; right:0;
+      background:var(--bg);
+      border-bottom:1px solid var(--line);
+      flex-direction:column;
+      gap:0;
+      max-height:0;
+      overflow:hidden;
+      transition:max-height .25s ease;
+    }
+    .navlinks.open{max-height:320px;}
+    .navlinks a{padding:16px 28px; border-top:1px solid var(--line); display:block;}
+    .menu-toggle{display:block;}
+    .nav-cta .btn-primary{display:none;}
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    padding:110px 0 90px;
+    background:
+      radial-gradient(ellipse 800px 500px at 85% -10%, rgba(255,74,31,0.18), transparent 60%),
+      repeating-linear-gradient(115deg, rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 1px, transparent 1px, transparent 64px);
+    border-bottom:1px solid var(--line);
+    overflow:hidden;
+  }
+  .hero-grid{
+    display:grid;
+    grid-template-columns:1.15fr 0.85fr;
+    gap:60px;
+    align-items:center;
+  }
+  .hero h1{
+    font-size:clamp(48px, 7vw, 92px);
+    margin:18px 0 22px;
+  }
+  .hero h1 .accent{color:var(--signal);}
+  .hero p.lede{
+    font-size:18px;
+    color:var(--text-dim);
+    max-width:480px;
+    margin-bottom:34px;
+  }
+  .hero-ctas{display:flex; gap:16px; flex-wrap:wrap; margin-bottom:52px;}
+
+  .stat-row{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:0;
+    border-top:1px solid var(--line);
+    padding-top:28px;
+  }
+  .stat{padding-right:20px; border-right:1px solid var(--line);}
+  .stat:last-child{border-right:none;}
+  .stat .num{
+    font-family:'JetBrains Mono', monospace;
+    font-size:34px;
+    font-weight:700;
+    color:var(--steel);
+  }
+  .stat .label{
+    font-size:12px;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    color:var(--text-dim);
+    margin-top:4px;
+  }
+
+  .hero-panel{
+    position:relative;
+    aspect-ratio:4/5;
+    background:
+      linear-gradient(160deg, var(--surface-2), var(--surface) 70%);
+    border:1px solid var(--line);
+    border-radius:3px;
+    display:flex;
+    align-items:flex-end;
+    padding:22px;
+    overflow:hidden;
+  }
+  .hero-panel::before{
+    content:"";
+    position:absolute; inset:0;
+    background:
+      repeating-linear-gradient(48deg, transparent 0 26px, rgba(255,74,31,0.05) 26px 27px),
+      repeating-linear-gradient(-48deg, transparent 0 26px, rgba(63,169,245,0.04) 26px 27px);
+  }
+  .hero-panel-tag{
+    position:relative;
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    background:rgba(13,13,15,0.72);
+    border:1px solid var(--line);
+    padding:10px 14px;
+    border-radius:2px;
+  }
+
+  @media (max-width:900px){
+    .hero-grid{grid-template-columns:1fr;}
+    .hero-panel{aspect-ratio:16/9; order:-1;}
+    .stat-row{grid-template-columns:repeat(3,1fr); gap:14px;}
+    .stat{padding-right:10px;}
+  }
+
+  /* ---------- SET SECTIONS (structural device: workout "sets") ---------- */
+  .set-label{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.1em;
+    color:var(--steel);
+    text-transform:uppercase;
+    margin-bottom:14px;
+  }
+
+  section{padding:100px 0;}
+  section.alt{background:var(--surface); border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
+
+  .section-head{max-width:640px; margin-bottom:56px;}
+  .section-head h2{font-size:clamp(32px,4.5vw,48px); margin:14px 0 16px;}
+  .section-head p{color:var(--text-dim); font-size:16px;}
+
+  /* ---------- ABOUT ---------- */
+  .about-grid{
+    display:grid;
+    grid-template-columns:0.8fr 1.2fr;
+    gap:64px;
+    align-items:start;
+  }
+  .about-photo{
+    aspect-ratio:3/4;
+    background:linear-gradient(150deg, var(--surface-2), var(--bg));
+    border:1px solid var(--line);
+    border-radius:3px;
+    position:relative;
+    overflow:hidden;
+  }
+  .about-photo::after{
+    content:"RV";
+    position:absolute; inset:0;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Anton', sans-serif;
+    font-size:120px;
+    color:rgba(255,74,31,0.08);
+  }
+  .about-copy p{color:var(--text-dim); margin-bottom:18px; max-width:560px;}
+  .cert-list{
+    margin-top:28px;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px 24px;
+  }
+  .cert-list li{
+    font-family:'JetBrains Mono', monospace;
+    font-size:13px;
+    color:var(--text);
+    padding:10px 0;
+    border-top:1px solid var(--line);
+  }
+  @media (max-width:820px){
+    .about-grid{grid-template-columns:1fr;}
+    .cert-list{grid-template-columns:1fr;}
+  }
+
+  /* ---------- PILLARS ---------- */
+  .pillars{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:1px;
+    background:var(--line);
+    border:1px solid var(--line);
+  }
+  .pillar{
+    background:var(--bg);
+    padding:36px 30px;
+  }
+  .pillar .set-label{color:var(--signal);}
+  .pillar h3{font-size:26px; margin-bottom:12px;}
+  .pillar p{color:var(--text-dim); font-size:14.5px;}
+  @media (max-width:820px){.pillars{grid-template-columns:1fr;}}
+
+  /* ---------- PROGRAMS ---------- */
+  .programs{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:24px;
+  }
+  .program-card{
+    background:var(--bg);
+    border:1px solid var(--line);
+    border-radius:3px;
+    padding:32px 28px;
+    display:flex;
+    flex-direction:column;
+    transition:border-color .15s ease, transform .15s ease;
+  }
+  .program-card:hover{border-color:var(--signal); transform:translateY(-4px);}
+  .program-card.featured{border-color:var(--steel);}
+  .program-card h3{font-size:24px; margin:14px 0 10px;}
+  .program-card .desc{color:var(--text-dim); font-size:14.5px; margin-bottom:24px; flex-grow:1;}
+  .program-card ul{margin-bottom:28px;}
+  .program-card ul li{
+    font-size:13.5px;
+    color:var(--text);
+    padding:8px 0;
+    border-top:1px solid var(--line);
+    display:flex; align-items:center; gap:10px;
+  }
+  .program-card ul li::before{content:"→"; color:var(--signal); font-family:'JetBrains Mono',monospace;}
+  @media (max-width:900px){.programs{grid-template-columns:1fr;}}
+
+  /* ---------- RESULTS / rep counter signature ---------- */
+  .results-top{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:24px;
+    margin-bottom:64px;
+  }
+  .counter-card{
+    border:1px solid var(--line);
+    background:var(--surface);
+    padding:30px 26px;
+    border-radius:3px;
+  }
+  .counter-card .count{
+    font-family:'JetBrains Mono', monospace;
+    font-size:52px;
+    font-weight:700;
+    color:var(--signal);
+    line-height:1;
+  }
+  .counter-card .count .suffix{font-size:28px;}
+  .counter-card .clabel{
+    margin-top:10px;
+    font-size:13px;
+    letter-spacing:0.05em;
+    text-transform:uppercase;
+    color:var(--text-dim);
+  }
+
+  .testimonials{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:24px;
+  }
+  .quote-card{
+    background:var(--bg);
+    border:1px solid var(--line);
+    border-radius:3px;
+    padding:30px 28px;
+  }
+  .quote-card p.q{
+    font-size:17px;
+    margin-bottom:20px;
+  }
+  .quote-card .who{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.05em;
+    text-transform:uppercase;
+    color:var(--steel);
+  }
+  @media (max-width:820px){
+    .results-top{grid-template-columns:1fr; }
+    .testimonials{grid-template-columns:1fr;}
+  }
+
+  /* ---------- CONTACT ---------- */
+  .contact-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:64px;
+  }
+  .contact-info p{color:var(--text-dim); max-width:420px; margin-bottom:26px;}
+  .contact-info .cline{
+    display:flex; justify-content:space-between;
+    padding:16px 0;
+    border-top:1px solid var(--line);
+    font-family:'JetBrains Mono', monospace;
+    font-size:13px;
+  }
+  .contact-info .cline span:first-child{color:var(--text-dim); text-transform:uppercase; letter-spacing:0.05em;}
+  .social-row{display:flex; gap:16px; margin-top:28px;}
+  .social-row a{
+    width:40px; height:40px;
+    border:1px solid var(--line);
+    border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    transition:border-color .15s ease, color .15s ease;
+  }
+  .social-row a:hover{border-color:var(--signal); color:var(--signal);}
+
+  form{display:flex; flex-direction:column; gap:16px;}
+  .field label{
+    display:block;
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    color:var(--text-dim);
+    margin-bottom:8px;
+  }
+  .field input, .field textarea, .field select{
+    width:100%;
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:2px;
+    padding:13px 14px;
+    color:var(--text);
+    font-family:'Work Sans', sans-serif;
+    font-size:14.5px;
+  }
+  .field input:focus, .field textarea:focus, .field select:focus{
+    border-color:var(--signal);
+  }
+  .field textarea{resize:vertical; min-height:100px;}
+  .form-note{font-size:12px; color:var(--text-dim); margin-top:4px;}
+
+  @media (max-width:820px){.contact-grid{grid-template-columns:1fr;}}
+
+  /* ---------- FOOTER ---------- */
+  footer{
+    border-top:1px solid var(--line);
+    padding:36px 0;
+  }
+  .foot-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:14px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    color:var(--text-dim);
+    text-transform:uppercase;
+    letter-spacing:0.04em;
+  }
+
+  .reveal{
+    opacity:0;
+    transform:translateY(18px);
+    transition:opacity .6s ease, transform .6s ease;
+  }
+  .reveal.in{opacity:1; transform:translateY(0);}
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a href="#top" class="logo">FORGE<span>.</span></a>
+    <ul class="navlinks" id="navlinks">
+      <li><a href="#about">About</a></li>
+      <li><a href="#approach">Approach</a></li>
+      <li><a href="#programs">Programs</a></li>
+      <li><a href="#results">Results</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <div class="nav-cta">
+      <a href="#contact" class="btn btn-primary">Book a Call</a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
+    </div>
+  </nav>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <p class="eyebrow">Strength &amp; Performance Coaching</p>
+        <h1>Train like it's the<br><span class="accent">fourth quarter.</span></h1>
+        <p class="lede">One-on-one and small-group coaching for athletes and lifters who want a program built around their sport, their schedule, and their actual weak points — not a template.</p>
+        <div class="hero-ctas">
+          <a href="#contact" class="btn btn-primary">Book Your Assessment</a>
+          <a href="#programs" class="btn btn-outline">See Programs</a>
+        </div>
+        <div class="stat-row">
+          <div class="stat"><div class="num" data-count="9">0</div><div class="label">Years Coaching</div></div>
+          <div class="stat"><div class="num" data-count="180">0</div><div class="label">Athletes Trained</div></div>
+          <div class="stat"><div class="num" data-count="34">0</div><div class="label">Avg. % Strength Gain</div></div>
+        </div>
+      </div>
+      <div class="hero-panel">
+        <div class="hero-panel-tag">SET 01 — SQUAT · 3×5 @ RPE8</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="wrap about-grid">
+      <div class="about-photo"></div>
+      <div class="about-copy">
+        <p class="set-label">SET 02 — ABOUT</p>
+        <h2>Riley Voss, Head Coach</h2>
+        <p>I spent six years coaching Division I track &amp; field before moving into private strength coaching — because the athletes who needed the most individual attention were the ones getting the least of it.</p>
+        <p>Every program I write starts from an assessment, not a template. If you're a field athlete, your off-season looks nothing like a powerlifter's peaking block, and your coaching shouldn't either.</p>
+        <ul class="cert-list">
+          <li>CSCS — Certified Strength &amp; Conditioning Specialist</li>
+          <li>USAW Level 2 — Weightlifting</li>
+          <li>Precision Nutrition L1</li>
+          <li>FRC — Functional Range Conditioning</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- APPROACH -->
+  <section id="approach" class="alt">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="set-label">SET 03 — APPROACH</p>
+        <h2>Three phases, one program.</h2>
+        <p>Every athlete moves through the same three pillars — the mix shifts depending on your sport, your calendar, and where you're starting from.</p>
+      </div>
+      <div class="pillars">
+        <div class="pillar">
+          <p class="set-label">01 — BUILD</p>
+          <h3>Strength</h3>
+          <p>Progressive, individualized loading built off your assessment — not a generic 5x5. We chase the lifts that carry over to your sport.</p>
+        </div>
+        <div class="pillar">
+          <p class="set-label">02 — SHARPEN</p>
+          <h3>Conditioning</h3>
+          <p>Energy-system work programmed to match your competition demands, so you're not gassed in the moments that matter.</p>
+        </div>
+        <div class="pillar">
+          <p class="set-label">03 — SUSTAIN</p>
+          <h3>Recovery</h3>
+          <p>Mobility, sleep, and load-management built into the plan from week one — so progress doesn't stall out from overuse.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROGRAMS -->
+  <section id="programs">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="set-label">SET 04 — PROGRAMS</p>
+        <h2>Pick your training format.</h2>
+        <p>All programs start with a movement assessment and a goal-setting call. Pricing is custom to your program length and format — book a call for a quote.</p>
+      </div>
+      <div class="programs">
+        <div class="program-card">
+          <p class="set-label">FORMAT</p>
+          <h3>Online Programming</h3>
+          <p class="desc">A fully individualized program delivered through an app, with weekly check-ins and video form review.</p>
+          <ul>
+            <li>Custom program, updated weekly</li>
+            <li>Async video form checks</li>
+            <li>Monthly progress call</li>
+          </ul>
+          <a href="#contact" class="btn btn-outline">Book a Call</a>
+        </div>
+        <div class="program-card featured">
+          <p class="set-label" style="color:var(--steel)">MOST BOOKED</p>
+          <h3>1:1 In-Person</h3>
+          <p class="desc">Hands-on coaching every session — technique, loading, and recovery managed in real time.</p>
+          <ul>
+            <li>2–4 sessions per week</li>
+            <li>Live coaching &amp; technique cues</li>
+            <li>Full recovery &amp; nutrition support</li>
+          </ul>
+          <a href="#contact" class="btn btn-primary">Book a Call</a>
+        </div>
+        <div class="program-card">
+          <p class="set-label">FORMAT</p>
+          <h3>Small-Group Training</h3>
+          <p class="desc">Semi-private sessions for 2–4 athletes with similar goals — individualized loading, shared energy.</p>
+          <ul>
+            <li>Groups of 2–4 athletes</li>
+            <li>Individualized within the group</li>
+            <li>3 sessions per week</li>
+          </ul>
+          <a href="#contact" class="btn btn-outline">Book a Call</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESULTS -->
+  <section id="results" class="alt">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="set-label">SET 05 — RESULTS</p>
+        <h2>The numbers, and the people behind them.</h2>
+      </div>
+      <div class="results-top">
+        <div class="counter-card">
+          <div class="count"><span data-count="97">0</span><span class="suffix">%</span></div>
+          <div class="clabel">Clients hit their 12-week goal</div>
+        </div>
+        <div class="counter-card">
+          <div class="count"><span data-count="220">0</span><span class="suffix">lb</span></div>
+          <div class="clabel">Avg. squat gain, first year</div>
+        </div>
+        <div class="counter-card">
+          <div class="count"><span data-count="4">0</span><span class="suffix">.9★</span></div>
+          <div class="clabel">Average client rating</div>
+        </div>
+      </div>
+      <div class="testimonials">
+        <div class="quote-card">
+          <p class="q">"Riley rebuilt my program around my knee history instead of ignoring it. First off-season in three years I didn't get hurt."</p>
+          <p class="who">— Dana M., Club Volleyball</p>
+        </div>
+        <div class="quote-card">
+          <p class="q">"The check-ins actually matter — my program changes every week based on how I'm recovering, not just what week it is."</p>
+          <p class="who">— Marcus T., Powerlifter</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="wrap contact-grid">
+      <div class="contact-info">
+        <p class="set-label">SET 06 — CONTACT</p>
+        <h2>Book your assessment.</h2>
+        <p>Fill out the form and I'll follow up within one business day to schedule your movement assessment and goal-setting call.</p>
+        <div class="cline"><span>Email</span><span>coach@forgecoaching.example</span></div>
+        <div class="cline"><span>Based in</span><span>Denver, CO</span></div>
+        <div class="cline"><span>Response time</span><span>&lt; 24 hours</span></div>
+        <div class="social-row">
+          <a href="#" aria-label="Instagram">IG</a>
+          <a href="#" aria-label="YouTube">YT</a>
+          <a href="#" aria-label="LinkedIn">IN</a>
+        </div>
+      </div>
+      <form id="contactForm">
+        <div class="field">
+          <label for="name">Name</label>
+          <input type="text" id="name" name="name" required>
+        </div>
+        <div class="field">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" required>
+        </div>
+        <div class="field">
+          <label for="format">Interested format</label>
+          <select id="format" name="format">
+            <option>Online Programming</option>
+            <option>1:1 In-Person</option>
+            <option>Small-Group Training</option>
+            <option>Not sure yet</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="goal">Your goal</label>
+          <textarea id="goal" name="goal" placeholder="What are you training for?"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Send &amp; Book Assessment</button>
+        <p class="form-note">This form is a demo — wire it to your booking tool (Calendly, email service, or CRM) to go live.</p>
+      </form>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap foot-row">
+    <span>© 2026 Forge Coaching</span>
+    <span>Denver, CO</span>
+    <span>Strength · Conditioning · Recovery</span>
+  </div>
+</footer>
+
+<script>
+  // Mobile menu toggle
+  const menuToggle = document.getElementById('menuToggle');
+  const navlinks = document.getElementById('navlinks');
+  menuToggle.addEventListener('click', () => {
+    const open = navlinks.classList.toggle('open');
+    menuToggle.setAttribute('aria-expanded', open);
+  });
+  navlinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    navlinks.classList.remove('open');
+    menuToggle.setAttribute('aria-expanded', 'false');
+  }));
+
+  // Count-up animation (signature element: rep-counter style stats)
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const counters = document.querySelectorAll('[data-count]');
+  const animateCount = (el) => {
+    const target = parseFloat(el.getAttribute('data-count'));
+    if (prefersReduced) { el.textContent = target; return; }
+    const duration = 1200;
+    const start = performance.now();
+    const step = (now) => {
+      const progress = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const value = target < 10 ? (eased * target).toFixed(1) : Math.floor(eased * target);
+      el.textContent = value;
+      if (progress < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  };
+
+  const countObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        animateCount(entry.target);
+        countObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.5 });
+  counters.forEach(c => countObserver.observe(c));
+
+  // Scroll reveal
+  document.querySelectorAll('section > .wrap').forEach(el => el.classList.add('reveal'));
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in');
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+  // Demo form handling
+  document.getElementById('contactForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    alert('Demo form — connect this to your booking tool or email service to receive submissions.');
+  });
+</script>
+
+</body>
+</html>
